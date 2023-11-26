@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:SimpleMVVM4Maui.Behaviors"
+             xmlns:controls="clr-namespace:SimpleMVVM4Maui.Controls"
+             xmlns:vm="clr-namespace:SimpleMVVM4Maui.ViewModels"
+             xmlns:model="clr-namespace:SimpleMVVM4Maui.Models"
+             x:DataType="vm:EmpViewModel"
+             x:Class="SimpleMVVM4Maui.Views.EmpView"
+             Title="EmpView">
+
+    <ContentPage.BindingContext>
+        <vm:EmpViewModel x:Name="vm"/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                                        Value="LightSkyBlue" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+
+    <ContentPage.Content>
+        <ScrollView Orientation="Horizontal"
+            HorizontalScrollBarVisibility="Always"
+            VerticalScrollBarVisibility="Always"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            x:Name="scrollView">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="HeaderGrid" Grid.Row="0" RowSpacing="0"  ColumnSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+
+                    <controls:DataGridHeader Text="사번" SortingEnabled="True" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="0" FieldName="EmpId" BindingContext="{x:Reference vm}"/>
+                    <controls:DataGridHeader Text="이름" SortingEnabled="False" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="1" FieldName="EmpName" BindingContext="{x:Reference vm}"/>
+                    <controls:DataGridHeader Text="주소" SortingEnabled="True" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="2" FieldName="Addr" BindingContext="{x:Reference vm}"/>
+                    <controls:DataGridHeader Text="-" SortingEnabled="False" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="3" />
+                    <controls:DataGridHeader Text="나이" SortingEnabled="False" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="4" FieldName="Age" BindingContext="{x:Reference vm}"/>
+                    <controls:DataGridHeader Text="+" SortingEnabled="False" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="5" />
+                    <controls:DataGridHeader Text="학년" SortingEnabled="False" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="6" />
+                </Grid>
+
+                <CollectionView 
+                    x:Name="collectionView"
+                    Grid.Row="1"
+                    SelectionMode="Single"
+                    SelectedItem="{Binding SelectedItem}"
+                    ItemsSource="{Binding EmpList}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:EmpModel">
+                            <Grid ColumnSpacing="0" RowSpacing="0" HeightRequest="40">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="80"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{Binding EmpId}" />
+                                <Label Grid.Column="1" Text="{Binding EmpName}" HorizontalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding Addr}"/>
+                                <Button x:Name="minusButton"
+                                        Grid.Column="3" 
+                                        Text="-"  
+                                        Clicked="minusButton_Clicked"
+                                        Command="{Binding MinusButtonCommand}"
+                                        CommandParameter="{Binding EmpId}"/>
+                                <Entry  x:Name="AgeEntry"
+                                    Grid.Column="4" 
+                                    Text="{Binding Age}"  
+                                    Keyboard="Numeric" 
+                                    ReturnCommandParameter="{Binding EmpId}"
+                                    Unfocused="AgeEntry_Unfocused"
+                                    Focused="AgeEntry_Focused"/>
+                                <Button x:Name="plusButton"
+                                        Grid.Column="5" 
+                                        Text="+"  
+                                        Clicked="plusButton_Clicked"
+                                        Command="{Binding PlusButtonCommand}"
+                                        CommandParameter="{Binding EmpId}"/>
+                                <Picker Grid.Column="6"  
+                                        Title="등급"
+                                        ItemsSource="{Binding Grades}"
+                                        ItemDisplayBinding="{Binding Name}"
+                                        SelectedItem="{Binding Grade}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>
