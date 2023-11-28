@@ -46,7 +46,7 @@
                 </Grid.RowDefinitions>
                 <Grid x:Name="HeaderGrid" Grid.Row="0" RowSpacing="0"  ColumnSpacing="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="50"/>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="150"/>
                         <ColumnDefinition Width="50"/>
@@ -74,7 +74,7 @@
                         <DataTemplate x:DataType="model:EmpModel">
                             <Grid ColumnSpacing="0" RowSpacing="0" HeightRequest="40">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="50"/>
@@ -92,20 +92,24 @@
                                         Command="{Binding MinusButtonCommand}"
                                         CommandParameter="{Binding EmpId}"/>
                                 <Entry  x:Name="AgeEntry"
-                                    Grid.Column="4" 
-                                    Text="{Binding Age}"  
-                                    Keyboard="Numeric" 
-                                    ReturnCommandParameter="{Binding EmpId}"
-                                    Unfocused="AgeEntry_Unfocused"
-                                    Focused="AgeEntry_Focused"/>
+                                        Grid.Column="4" 
+                                        Text="{Binding Age}"  
+                                        Keyboard="Numeric" 
+                                        Completed="AgeEntry_Completed"
+                                        ReturnCommandParameter="{Binding EmpId}"
+                                        Unfocused="AgeEntry_Unfocused"
+                                        Focused="AgeEntry_Focused"/>
                                 <Button x:Name="plusButton"
                                         Grid.Column="5" 
                                         Text="+"  
                                         Clicked="plusButton_Clicked"
                                         Command="{Binding PlusButtonCommand}"
                                         CommandParameter="{Binding EmpId}"/>
-                                <Picker Grid.Column="6"  
+                                <Picker x:Name="gradePicker"
+                                        Grid.Column="6"  
                                         Title="등급"
+                                        ClassId="{Binding EmpId}"
+                                        SelectedIndexChanged="gradePicker_SelectedIndexChanged"
                                         ItemsSource="{Binding Grades}"
                                         ItemDisplayBinding="{Binding Name}"
                                         SelectedItem="{Binding Grade}"/>
